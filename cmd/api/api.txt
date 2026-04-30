@@ -1,0 +1,85 @@
+
+--PUBLIC --------------------------
+
+POST   /api/auth/register          # регистрация
+POST   /api/auth/login             # авторизация
+POST   /api/auth/reset-request     # запрос кода сброса пароля (код на email при SMTP_USER + SMTP_PASSWORD; иначе в ответе dev-режим)
+POST   /api/auth/reset-password    # сброс пароля по коду
+
+
+
+
+---PRIVATE USER-------------------------------
+
+
+# Профиль
+GET    /api/profile                      # просмотр профиля
+PUT    /api/profile                      # изменение данных пользователя
+PUT    /api/profile/password             # смена пароля: old_password, new_password
+POST   /api/auth/logout                  # выход из профиля
+
+# Меню
+GET    /api/products               # просмотр меню: query type (pizza|drink|extra|extras, legacy snack|sauce), category_id, search, sort
+GET    /api/products/:id           # просмотр конкретного товара
+
+# Корзина
+GET    /api/cart                   # просмотр корзины
+POST   /api/cart                   # добавление товара в корзину
+PATCH  /api/cart/:id               # изменение количества товара
+DELETE /api/cart/:id               # удаление товара из корзины
+
+# Заказы
+POST   /api/orders                 # оформление заказа
+GET    /api/orders                 # история заказов
+
+# Избранное
+GET    /api/favorites              # просмотр избранного
+POST   /api/favorites              # добавление в избранное
+DELETE /api/favorites/:id          # удаление из избранного
+
+# Отзывы
+GET    /api/products/:id/reviews   # просмотр отзывов товара
+POST   /api/products/:id/reviews   # добавление отзыва
+
+
+
+
+
+
+------PRIVATE ADMIN -------------
+
+# Пользователи
+GET    /api/admin/users            # список всех пользователей
+GET    /api/admin/users/export     # экспорт пользователей в CSV
+
+# Пиццы
+GET    /api/admin/pizzas           # список всех пицц
+POST   /api/admin/pizzas           # создание пиццы
+PUT    /api/admin/pizzas/:id       # обновление пиццы
+DELETE /api/admin/pizzas/:id       # удаление пиццы
+
+# Напитки
+GET    /api/admin/drinks           # список всех напитков
+POST   /api/admin/drinks           # создание напитка
+PUT    /api/admin/drinks/:id       # обновление напитка
+DELETE /api/admin/drinks/:id       # удаление напитка
+
+# Категории товаров (для допов)
+GET    /api/admin/product-categories      # список категорий
+POST   /api/admin/product-categories      # создание: title
+PUT    /api/admin/product-categories/:id  # обновление
+DELETE /api/admin/product-categories/:id  # удаление (если нет товаров в категории)
+
+# Допы (бывшие снеки и соусы; в теле POST/PUT — category_id)
+GET    /api/admin/extras           # список допов
+POST   /api/admin/extras           # создание: title, description, price, img_url, category_id
+PUT    /api/admin/extras/:id       # частичное обновление (опциональные поля + category_id)
+DELETE /api/admin/extras/:id       # удаление
+
+# Отзывы
+GET    /api/admin/reviews          # просмотр всех отзывов
+DELETE /api/admin/reviews/:id      # удаление отзыва
+
+# Аналитика
+GET    /api/admin/analytics        # аналитика заказов (фильтрация, сортировка через query params)
+
